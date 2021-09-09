@@ -12,11 +12,19 @@ def process_and_markdown(text):
     return Markup(markdown.markdown(
                   process_text(request.form['text']).replace("\n", "  \n")))
 
-@app.route('/', methods=['POST','GET'])
-def main():
+#@app.route('/', methods=['POST','GET'])
+#def main():
+#    if request.method == 'POST' and len(request.form['text'].strip()):
+#        return render_template('response.html',
+#                               stressed=process_and_markdown(request.form['text']))
+#    return render_template('form.html')
+
+@app.route("/", methods=['POST','GET'])
+def index():
     if request.method == 'POST' and len(request.form['text'].strip()):
-        return render_template('response.html',
-                               stressed=process_and_markdown(request.form['text']))
+        return render_template('response.html', stressed=process_and_markdown(request.form['text']))
     return render_template('form.html')
 
-
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
